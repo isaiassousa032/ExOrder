@@ -1,4 +1,6 @@
 ﻿using ExProposto.Entities.Enums;
+using System.Globalization;
+using System.Text;
 
 namespace ExProposto.Entities
 {
@@ -32,19 +34,29 @@ namespace ExProposto.Entities
         }
 
 
-        public double Total()
+        public double Total() //conferir posteriormente
         {
-            //int totalItems = 0;
-            //foreach (OrderItem item in Items)
-            //{
-            //    totalItems += item.Quantity;
-            //}
-            //return totalItems;
-
-            foreach (Order item in Items)
+            double total = 0.0;
+            foreach (OrderItem item in Items)
             {
-                
+                 total += item.SubTotal();
             }
+            return total;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Order moment: " + Moment.ToString("dd/MM/yyyy HH:mm:ss"));
+            sb.AppendLine("Order status: " + Status);
+            sb.AppendLine("Client: " + Client);
+            sb.AppendLine("Order items:");
+            foreach (OrderItem item in Items)
+            {
+                sb.AppendLine(item.ToString());
+            }
+            sb.AppendLine("Total price: $" + Total().ToString("F2", CultureInfo.InvariantCulture));
+            return sb.ToString();
         }
     }
 }
